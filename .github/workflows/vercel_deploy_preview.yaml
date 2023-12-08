@@ -1,8 +1,9 @@
 name: Vercel Deploy Preview
 
 on:
-  workflow_dispatch: 
-  repository_dispatch:
+    workflow_dispatch:
+    repository_dispatch:
+        types: [deploy-preview]
 
 jobs:    
     deploy:
