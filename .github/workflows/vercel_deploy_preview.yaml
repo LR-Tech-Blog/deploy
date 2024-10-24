@@ -21,13 +21,13 @@ jobs:
         - name: Remove dumy post images
           run: rm -rf ./blog/public/images/posts
         - name: Remove dumy content
-          run: rm -rf ./blog/src/content
+          run: rm -rf ./blog/src/data
 
         - name: Copy content
           run: 
             |
-            mkdir ./blog/src/content
-            mv ./content/content/* ./blog/src/content/
+            mkdir ./blog/src/data
+            mv ./content/data/* ./blog/src/data/
         - name: Copy post images
           run: 
             |
