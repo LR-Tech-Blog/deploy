@@ -3,61 +3,53 @@ name: Vercel Deploy Production
 on:
   workflow_dispatch:
 
-jobs:    
-    deploy:
-        runs-on: ubuntu-latest
-        environment: production
-        steps:
-        - uses: actions/checkout@v4
-          with:
-            repository: LR-Tech-Blog/content
-            path: content
-        - uses: actions/checkout@v4
-          with:
-            repository: LR-Tech-Blog/blog
-            path: blog
-        - name: Remove dumy post images
-          run: rm -rf ./blog/public/images/posts
-        - name: Remove dumy content
-          run: rm -rf ./blog/src/data
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: LR-Tech-Blog/content
+          path: content
+      - uses: actions/checkout@v4
+        with:
+          repository: LR-Tech-Blog/blog
+          path: blog
+      - name: Remove dumy post images
+        run: rm -rf ./blog/public/images/posts
+      - name: Remove dumy content
+        run: rm -rf ./blog/src/data
 
-        - name: Copy content
-          run: 
-            |
-            mkdir ./blog/src/data
-            mv ./content/data/* ./blog/src/data/
-        - name: Copy post images
-          run: 
-            |
-            mkdir ./blog/public/images/posts
-            mv ./content/public/images/posts/* ./blog/public/images/posts/
+      - name: Copy content
+        run: |
+          mkdir ./blog/src/data
+          mv ./content/data/* ./blog/src/data/
+      - name: Copy post images
+        run: |
+          mkdir ./blog/public/images/posts
+          mv ./content/public/images/posts/* ./blog/public/images/posts/
 
-        - name: Install Vercel CLI
-          run: npm install -g vercel
-        - name: Install dependencies
-          run:
-            |
-            cd ./blog
-            npm install
-        - name: Astro build
-          run:
-            |
-            cd ./blog
-            npx astro sync
-            npx astro build
-        - name: Pull env information
-          run: 
-            |
-            cd ./blog
-            vercel pull --yes --environment=${{ vars.VERCEL_ENVIRONMENT }} --token=${{ secrets.VERCEL_TOKEN }}
-        - name: Vercel build
-          run:
-            |
-            cd ./blog
-            vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
-        - name: Vercel Deploy
-          run: 
-            |
-            cd ./blog
-            vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
-
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Install dependencies
+        run: |
+          cd ./blog
+          npm install
+      - name: Astro build
+        run: |
+          cd ./blog
+          npx astro sync
+          npx astro build
+      - name: Pull env information
+        run: |
+          cd ./blog
+          vercel pull --yes --environment=${{ vars.VERCEL_ENVIRONMENT }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Vercel build
+        run: |
+          cd ./blog
+          vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Vercel Deploy
+        run: |
+          cd ./blog
+          vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
